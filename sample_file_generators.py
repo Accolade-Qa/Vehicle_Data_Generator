@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-import data
-from dynamic_fields import DynamicFieldFactory
-from settings import SETTINGS
+from . import data
+from .dynamic_fields import DynamicFieldFactory
+from .settings import SETTINGS
 
 
 def _ensure_output_dir(output_dir: str | None = None) -> str:

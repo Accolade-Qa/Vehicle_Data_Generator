@@ -1,12 +1,12 @@
 import argparse
 
-from crm_api_generator import send_ticket_generation_requests
-from fota_batch_generator import generate_fota_batch_csv
-from institutional_sales_generator import generate_institutional_sales
-from sample_file_generators import generate_all_sample_files
-from sim_batch_generator import generate_sim_batch_csv
-from ticket_data_csv_generator import generate_ticket_data_csv
-from ticket_json_generator import generate_ticket_json
+from .crm_api_generator import send_ticket_generation_requests
+from .fota_batch_generator import generate_fota_batch_csv
+from .institutional_sales_generator import generate_institutional_sales
+from .sample_file_generators import generate_all_sample_files
+from .sim_batch_generator import generate_sim_batch_csv
+from .ticket_data_csv_generator import generate_ticket_data_csv
+from .ticket_json_generator import generate_ticket_json
 
 
 def build_parser() -> argparse.ArgumentParser:

@@ -2,9 +2,9 @@ import csv
 import os
 from datetime import datetime
 
-from dynamic_fields import DynamicFieldFactory
-from settings import SETTINGS
-import data
+from .dynamic_fields import DynamicFieldFactory
+from .settings import SETTINGS
+from . import data
 
 
 def _random_uin(field_factory: DynamicFieldFactory):

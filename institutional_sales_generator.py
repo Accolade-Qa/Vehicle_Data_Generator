@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-import data
-from dynamic_fields import DynamicFieldFactory
-from settings import SETTINGS
+from . import data
+from .dynamic_fields import DynamicFieldFactory
+from .settings import SETTINGS
 
 VEHICLE_OWNER = {
     "FIRST_NAME": "SBSB",

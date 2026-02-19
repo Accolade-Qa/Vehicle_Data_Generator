@@ -2,9 +2,9 @@ import csv
 import os
 from datetime import datetime
 
-import data
-from dynamic_fields import DynamicFieldFactory
-from settings import SETTINGS
+from . import data
+from .dynamic_fields import DynamicFieldFactory
+from .settings import SETTINGS
 
 SIM_STATUS_OPTIONS = ["Active", "Inactive"]
 ACTIVATION_STATUS_OPTIONS = ["Pending", "Completed"]

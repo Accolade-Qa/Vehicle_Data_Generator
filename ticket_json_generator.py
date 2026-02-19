@@ -2,9 +2,9 @@ import json
 import os
 from datetime import datetime
 
-import data
-from dynamic_fields import DynamicFieldFactory
-from settings import SETTINGS
+from . import data
+from .dynamic_fields import DynamicFieldFactory
+from .settings import SETTINGS
 
 
 def generate_ticket_json(num_records: int = 5, output_dir: str | None = None):

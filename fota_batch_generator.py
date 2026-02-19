@@ -1,9 +1,9 @@
 import csv
 import os
 
-import data
-from dynamic_fields import DynamicFieldFactory
-from settings import SETTINGS
+from . import data
+from .dynamic_fields import DynamicFieldFactory
+from .settings import SETTINGS
 
 
 def generate_fota_batch_csv(

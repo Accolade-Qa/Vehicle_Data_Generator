@@ -1,6 +1,6 @@
 import requests
 
-from settings import SETTINGS
+from .settings import SETTINGS
 
 
 def default_login_payload() -> dict:
