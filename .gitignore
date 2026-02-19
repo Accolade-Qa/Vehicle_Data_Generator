@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Env/config
+.env
+
+# Build/distribution
+build/
+dist/
+*.egg-info/
+
+# IDE/editor
+.idea/
+.vscode/
+
+# Project outputs
+output/
+Vehicle_data_generator/output/
+
+# Project samples/generated samples
+Sample_Files/
+Vehicle_data_generator/Sample_Files/

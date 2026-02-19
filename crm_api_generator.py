@@ -4,6 +4,10 @@ from .settings import SETTINGS
 
 
 def default_login_payload() -> dict:
+    if not SETTINGS.crm_username or not SETTINGS.crm_password:
+        raise ValueError(
+            "CRM credentials are missing. Set VDG_CRM_USERNAME and VDG_CRM_PASSWORD in .env."
+        )
     return {"username": SETTINGS.crm_username, "password": SETTINGS.crm_password}
 
 

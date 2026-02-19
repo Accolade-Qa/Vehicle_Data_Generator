@@ -1,5 +1,24 @@
 import os
 from dataclasses import dataclass
+from pathlib import Path
+
+
+def _load_dotenv_if_present() -> None:
+    dotenv_path = Path(__file__).resolve().parent.parent / ".env"
+    if not dotenv_path.exists():
+        return
+
+    for line in dotenv_path.read_text(encoding="utf-8").splitlines():
+        clean_line = line.strip()
+        if not clean_line or clean_line.startswith("#") or "=" not in clean_line:
+            continue
+        key, value = clean_line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        os.environ.setdefault(key, value)
+
+
+_load_dotenv_if_present()
 
 
 @dataclass(frozen=True)
@@ -13,8 +32,8 @@ class ProjectSettings:
 
     crm_login_api_url: str = "http://20.219.88.214:6109/api/crm/generateToken"
     crm_ticket_api_url: str = "http://20.219.88.214:6109/api/crm/generateTickets"
-    crm_username: str = "accoladeCrm"
-    crm_password: str = "admin@123"
+    crm_username: str = ""
+    crm_password: str = ""
 
     @classmethod
     def from_env(cls) -> "ProjectSettings":
@@ -27,8 +46,8 @@ class ProjectSettings:
             default_fota_model=os.getenv("VDG_DEFAULT_FOTA_MODEL", "4G"),
             crm_login_api_url=os.getenv("VDG_CRM_LOGIN_API_URL", "http://20.219.88.214:6109/api/crm/generateToken"),
             crm_ticket_api_url=os.getenv("VDG_CRM_TICKET_API_URL", "http://20.219.88.214:6109/api/crm/generateTickets"),
-            crm_username=os.getenv("VDG_CRM_USERNAME", "accoladeCrm"),
-            crm_password=os.getenv("VDG_CRM_PASSWORD", "admin@123"),
+            crm_username=os.getenv("VDG_CRM_USERNAME", ""),
+            crm_password=os.getenv("VDG_CRM_PASSWORD", ""),
         )
 
 
