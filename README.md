@@ -1,4 +1,4 @@
-# Vehicle Data Generator CLI
+# VDG CLI
 
 This project generates multiple vehicle-data artifacts (CSV, JSON, XLSX) and can also call the CRM ticket API.
 
@@ -7,7 +7,7 @@ This project generates multiple vehicle-data artifacts (CSV, JSON, XLSX) and can
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+pip install -e .
 ```
 
 Optional environment configuration:
@@ -22,10 +22,10 @@ Set CRM values in `.env` before using `crm-api`:
 
 ## CLI Usage
 
-Run as a module:
+Run as a CLI:
 
 ```powershell
-python -m Vehicle_data_generator --help
+vdg --help
 ```
 
 ### Commands
@@ -41,18 +41,25 @@ python -m Vehicle_data_generator --help
 Examples:
 
 ```powershell
-python -m Vehicle_data_generator sim-batch --records 20
-python -m Vehicle_data_generator ticket-json --records 5 --output-dir output
-python -m Vehicle_data_generator fota-batch --records 10 --ufw 5.2.9 --model 4G
-python -m Vehicle_data_generator institutional-sales --records 15
-python -m Vehicle_data_generator sample-files --records 10
-python -m Vehicle_data_generator ticket-csv --records 25
-python -m Vehicle_data_generator crm-api --vin-start 40 --vin-end 45 --vin-prefix SURAJ07082025_
+vdg sim-batch -r 20 -o output
+vdg ticket-json -r 5 -o output
+vdg fota-batch -r 10 -f fota_batch.csv -u 5.2.9 -m 4G -o output
+vdg institutional-sales -r 15 -o output
+vdg sample-files -r 10 -o output
+vdg ticket-csv -r 25 -f generated_records.csv -o output
+vdg crm-api -s 40 -e 45 -p SURAJ07082025_
+```
+
+Help:
+
+```powershell
+vdg -h
+vdg <command> -h
 ```
 
 ## Dynamic Field Design
 
-Dynamic field generation is centralized in `Vehicle_data_generator/dynamic_fields.py` via `DynamicFieldFactory`.
+Dynamic field generation is centralized in `src/vehicle_data_generator/dynamic_fields.py` via `DynamicFieldFactory`.
 Modules consume this class for random/stateful fields like:
 
 - RTO and state
@@ -61,4 +68,4 @@ Modules consume this class for random/stateful fields like:
 - pincodes
 - random date generation
 
-Settings are centralized in `Vehicle_data_generator/settings.py` and can be overridden via environment variables.
+Settings are centralized in `src/vehicle_data_generator/settings.py` and can be overridden via environment variables.

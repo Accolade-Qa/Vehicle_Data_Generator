@@ -4,8 +4,12 @@ from pathlib import Path
 
 
 def _load_dotenv_if_present() -> None:
-    dotenv_path = Path(__file__).resolve().parent.parent / ".env"
-    if not dotenv_path.exists():
+    candidate_paths = [
+        Path(__file__).resolve().parents[2] / ".env",
+        Path.cwd() / ".env",
+    ]
+    dotenv_path = next((path for path in candidate_paths if path.exists()), None)
+    if dotenv_path is None:
         return
 
     for line in dotenv_path.read_text(encoding="utf-8").splitlines():
