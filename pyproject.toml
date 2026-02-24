@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "vdg"
 version = "0.1.0"
-description = "CLI tool for generating vehicle datasets and CRM ticket API payloads"
+description = "Desktop tool for generating vehicle datasets and CRM ticket API payloads"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -14,8 +14,8 @@ dependencies = [
     "requests",
 ]
 
-[project.scripts]
-vdg = "vehicle_data_generator.cli:main"
+[project.gui-scripts]
+vdg = "vehicle_data_generator.app:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

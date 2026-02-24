@@ -1,6 +1,7 @@
-# VDG CLI
+# Vehicle Data Generator (Desktop App + EXE)
 
-This project generates multiple vehicle-data artifacts (CSV, JSON, XLSX) and can also call the CRM ticket API.
+This project generates multiple vehicle-data artifacts (CSV, JSON, XLSX) and can call the CRM ticket API.
+It now runs as a desktop software app and can be packaged into a Windows `.exe`.
 
 ## Setup
 
@@ -16,56 +17,53 @@ Optional environment configuration:
 Copy-Item .env.example .env
 ```
 
-Set CRM values in `.env` before using `crm-api`:
+Set CRM values in `.env` before using CRM API actions:
 - `VDG_CRM_USERNAME`
 - `VDG_CRM_PASSWORD`
 
-## CLI Usage
-
-Run as a CLI:
+## Run as Desktop Software (No CLI Required)
 
 ```powershell
-vdg --help
+python -m vehicle_data_generator
 ```
 
-### Commands
-
-- `sim-batch`: Generate SIM batch CSV
-- `ticket-json`: Generate ticketing JSON
-- `fota-batch`: Generate FOTA CSV
-- `institutional-sales`: Generate institutional sales XLSX
-- `sample-files`: Generate sample-format files
-- `ticket-csv`: Generate ticket CSV
-- `crm-api`: Send CRM ticket API requests
-
-Examples:
+Or, if installed in the active environment:
 
 ```powershell
-vdg sim-batch -r 20 -o output
-vdg ticket-json -r 5 -o output
-vdg fota-batch -r 10 -f fota_batch.csv -u 5.2.9 -m 4G -o output
-vdg institutional-sales -r 15 -o output
-vdg sample-files -r 10 -o output
-vdg ticket-csv -r 25 -f generated_records.csv -o output
-vdg crm-api -s 40 -e 45 -p SURAJ07082025_
+vdg
 ```
 
-Help:
+The app opens a GUI where you can:
+- generate SIM batch CSV
+- generate ticket JSON
+- generate FOTA batch CSV
+- generate institutional sales XLSX
+- generate sample files
+- generate ticket CSV
+- send CRM ticket API requests
+
+## Build Windows EXE
+
+Use the included build script:
 
 ```powershell
-vdg -h
-vdg <command> -h
+.\build_exe.ps1
 ```
 
-## Dynamic Field Design
+Optional clean build:
 
-Dynamic field generation is centralized in `src/vehicle_data_generator/dynamic_fields.py` via `DynamicFieldFactory`.
-Modules consume this class for random/stateful fields like:
+```powershell
+.\build_exe.ps1 -Clean
+```
 
-- RTO and state
-- registration number
-- mobile numbers
-- pincodes
-- random date generation
+Output executable:
 
-Settings are centralized in `src/vehicle_data_generator/settings.py` and can be overridden via environment variables.
+```text
+dist\VehicleDataGenerator.exe
+```
+
+Run it directly:
+
+```powershell
+.\dist\VehicleDataGenerator.exe
+```

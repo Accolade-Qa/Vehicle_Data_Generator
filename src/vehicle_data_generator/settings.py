@@ -1,14 +1,32 @@
 import os
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 
 def _load_dotenv_if_present() -> None:
-    candidate_paths = [
-        Path(__file__).resolve().parents[2] / ".env",
-        Path.cwd() / ".env",
-    ]
-    dotenv_path = next((path for path in candidate_paths if path.exists()), None)
+    candidate_paths: list[Path] = []
+
+    # Source layout (repo root / .env)
+    candidate_paths.append(Path(__file__).resolve().parents[2] / ".env")
+    # Current working directory
+    candidate_paths.append(Path.cwd() / ".env")
+
+    # PyInstaller executable folder and parent folder.
+    if getattr(sys, "frozen", False):
+        exe_dir = Path(sys.executable).resolve().parent
+        candidate_paths.append(exe_dir / ".env")
+        candidate_paths.append(exe_dir.parent / ".env")
+
+    # Keep order, remove duplicates.
+    seen: set[Path] = set()
+    ordered_candidates: list[Path] = []
+    for candidate in candidate_paths:
+        if candidate not in seen:
+            seen.add(candidate)
+            ordered_candidates.append(candidate)
+
+    dotenv_path = next((path for path in ordered_candidates if path.exists()), None)
     if dotenv_path is None:
         return
 
