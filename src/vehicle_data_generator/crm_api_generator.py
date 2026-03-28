@@ -17,7 +17,7 @@ def default_base_payload() -> dict:
         "UIN_NO": "ACON4NA082300008699",
         "DEVICE_IMEI": "861564061408699",
         "DEVICE_MAKE": SETTINGS.device_make,
-        "DEVICE_MODEL": "AEPL051401",
+        "DEVICE_MODEL": SETTINGS.ticket_device_model,
         "ENGINE_NO": "ENGINE_SR_N_30032103",
         "REG_NUMBER": "MH14FF9204",
         "VEHICLE_OWNER_LAST_NAME": "Bhalerao",
@@ -35,7 +35,7 @@ def default_base_payload() -> dict:
         "POI_DOC_TYPE": "ADHARAB123",
         "POI_DOC_NO": "ADHARXYZ123",
         "RTO_OFFICE_CODE": "MH14",
-        "RTO_STATE": "DL",
+        "RTO_STATE": "MH",
         "PRIMARY_OPERATOR": "AIRTEL",
         "SECONDARY_OPERATOR": "BSNL",
         "PRIMARY_MOBILE_NUMBER": "8765284847",
@@ -65,7 +65,15 @@ def send_ticket_generation_requests(
     login_payload = login_payload or default_login_payload()
     base_payload = base_payload or default_base_payload()
 
-    response = requests.post(login_api_url, headers={"Content-Type": "application/json"}, json=login_payload, timeout=30)
+    try:
+        response = requests.post(
+            login_api_url,
+            headers={"Content-Type": "application/json"},
+            json=login_payload,
+            timeout=30,
+        )
+    except requests.RequestException as exc:
+        raise RuntimeError(f"Login request failed: {exc}") from exc
     if response.status_code != 200:
         raise RuntimeError(f"Login failed: {response.status_code} | {response.text}")
 
@@ -80,7 +88,10 @@ def send_ticket_generation_requests(
     for vin_index in range(vin_start, vin_end + 1):
         payload = base_payload.copy()
         payload["VIN_NO"] = f"{vin_prefix}{vin_index}"
-        vin_response = requests.post(vin_api_url, headers=headers, json=[payload], timeout=30)
+        try:
+            vin_response = requests.post(vin_api_url, headers=headers, json=[payload], timeout=30)
+        except requests.RequestException as exc:
+            raise RuntimeError(f"VIN request failed for {payload['VIN_NO']}: {exc}") from exc
         responses.append((vin_index, payload["VIN_NO"], vin_response.status_code, vin_response.text))
         print(f"[VIN {vin_index}] VIN_NO: {payload['VIN_NO']} => Status: {vin_response.status_code}")
 

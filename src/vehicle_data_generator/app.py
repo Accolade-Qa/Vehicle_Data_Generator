@@ -191,9 +191,13 @@ class VDGDesktopApp(tk.Tk):
         )
 
     def _action_crm(self):
+        vin_start = self._get_positive_int(self.vin_start_var.get(), "VIN Start")
+        vin_end = self._get_positive_int(self.vin_end_var.get(), "VIN End")
+        if vin_end < vin_start:
+            raise ValueError("VIN End must be greater than or equal to VIN Start.")
         responses = send_ticket_generation_requests(
-            vin_start=self._get_positive_int(self.vin_start_var.get(), "VIN Start"),
-            vin_end=self._get_positive_int(self.vin_end_var.get(), "VIN End"),
+            vin_start=vin_start,
+            vin_end=vin_end,
             vin_prefix=self.vin_prefix_var.get().strip() or "SURAJ07082025_",
         )
         return f"CRM calls completed: {len(responses)} requests."

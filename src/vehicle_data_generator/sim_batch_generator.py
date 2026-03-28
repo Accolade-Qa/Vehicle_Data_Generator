@@ -54,7 +54,7 @@ def generate_sim_batch_csv(num_records: int = 10, output_dir: str | None = None)
             rto_state, rto_office_code = field_factory.random_rto()
 
             activation_date = datetime.today().strftime("%d-%b-%y")
-            activation_expiry = datetime.today().replace(year=datetime.today().year + 5).strftime("%d-%b-%y")
+            activation_expiry = (datetime.today() + timedelta(days=365 * 5)).strftime("%d-%b-%y")
 
             writer.writerow([
                 record["vin"],

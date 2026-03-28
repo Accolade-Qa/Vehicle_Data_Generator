@@ -67,7 +67,7 @@ def generate_dispatch_sheet_excel(num_records: int = 10, output_dir: str | None 
             "Bootstrap Exp": (datetime.today() + timedelta(days=365)).strftime("%d.%m.%Y"),
             "TCU Test Status": "OK",
             "Emission Type": "A4G",
-            "SIM Operator ": field_factory.rng.choice(["BSNL", "Airtel", "Jio"]),
+            "SIM Operator": field_factory.rng.choice(["BSNL", "Airtel", "Jio"]),
             "SIM Vendor": field_factory.rng.choice(["Sensorise", "Airtel", "Jio"]),
         })
 
