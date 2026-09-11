@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-from .src.vehicle_data_generator import data
-from .dynamic_fields import DynamicFieldFactory
-from .settings import SETTINGS
+from config.settings import SETTINGS
+from dataset.data import RTO_CODES, get_record_by_index
+from dataset.dynamic_fields import DynamicFieldFactory
 
 VEHICLE_OWNER = {
     "FIRST_NAME": "SBSB",
@@ -37,17 +37,17 @@ VEHICLE_MODELS = ["NANO", "Sedan", "SUV", "Electric", "Truck"]
 
 
 def generate_institutional_sales(number_of_records: int = 10, output_dir: str | None = None):
-    field_factory = DynamicFieldFactory(data.RTO_CODES)
+    field_factory = DynamicFieldFactory(RTO_CODES)
     start_date = datetime.today()
     expiry_date = start_date + timedelta(days=730)
     output_dir = output_dir or SETTINGS.default_output_dir
     os.makedirs(output_dir, exist_ok=True)
 
-    rto_pairs = [(state, code) for state, codes in data.RTO_CODES.items() for code in codes]
+    rto_pairs = [(state, code) for state, codes in RTO_CODES.items() for code in codes]
     records = []
 
     for index in range(number_of_records):
-        base_record = data.get_record_by_index(index)
+        base_record = get_record_by_index(index)
         _, rto_code = rto_pairs[index % len(rto_pairs)]
 
         records.append({

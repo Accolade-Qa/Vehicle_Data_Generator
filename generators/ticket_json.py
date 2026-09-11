@@ -2,18 +2,18 @@ import json
 import os
 from datetime import datetime
 
-from .src.vehicle_data_generator import data
-from .dynamic_fields import DynamicFieldFactory
-from .settings import SETTINGS
+from config.settings import SETTINGS
+from dataset.data import RTO_CODES, get_all_data
+from dataset.dynamic_fields import DynamicFieldFactory
 
 
 def generate_ticket_json(num_records: int = 5, output_dir: str | None = None):
     output_dir = output_dir or SETTINGS.default_output_dir
     os.makedirs(output_dir, exist_ok=True)
 
-    field_factory = DynamicFieldFactory(data.RTO_CODES)
+    field_factory = DynamicFieldFactory(RTO_CODES)
     vehicles = []
-    dataset = data.get_all_data()
+    dataset = get_all_data()
 
     for index in range(num_records):
         record = dataset[index % len(dataset)]

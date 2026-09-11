@@ -2,9 +2,9 @@ import csv
 import os
 from datetime import datetime, timedelta
 
-from .src.vehicle_data_generator import data
-from .dynamic_fields import DynamicFieldFactory
-from .settings import SETTINGS
+from config.settings import SETTINGS
+from dataset.data import RTO_CODES, get_record_by_index
+from dataset.dynamic_fields import DynamicFieldFactory
 
 SIM_STATUS_OPTIONS = ["Active", "Inactive"]
 ACTIVATION_STATUS_OPTIONS = ["Pending", "Completed"]
@@ -28,7 +28,7 @@ VEHICLE_MODELS = [
 
 
 def generate_sim_batch_csv(num_records: int = 10, output_dir: str | None = None):
-    field_factory = DynamicFieldFactory(data.RTO_CODES)
+    field_factory = DynamicFieldFactory(RTO_CODES)
     output_dir = output_dir or SETTINGS.default_output_dir
     os.makedirs(output_dir, exist_ok=True)
 
@@ -50,7 +50,7 @@ def generate_sim_batch_csv(num_records: int = 10, output_dir: str | None = None)
         ])
 
         for i in range(num_records):
-            record = data.get_record_by_index(i)
+            record = get_record_by_index(i)
             rto_state, rto_office_code = field_factory.random_rto()
 
             activation_date = datetime.today().strftime("%d-%b-%y")

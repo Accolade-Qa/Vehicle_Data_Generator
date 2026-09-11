@@ -55,7 +55,6 @@ DATASET = [
     {"uin": "ACON4NA042300020067", "iccid": "89916420534724525945", "imei": "867018065564589", "vin": "ACCDEV2022DEV2022"}
 ]
 
-
 RTO_CODES = {
     "Andaman & Nicobar Islands": ["AN01", "AN02", "AN03"],
     "Andhra Pradesh": ["AP01", "AP02", "AP03", "AP04", "AP05", "AP07", "AP09", "AP10", "AP11", "AP12"],
@@ -92,24 +91,22 @@ RTO_CODES = {
     "West Bengal": ["WB01", "WB02", "WB03", "WB04", "WB05", "WB06", "WB07", "WB08", "WB09", "WB10"],
     "Chandigarh": ["CH01"],
     "Dadra & Nagar Haveli and Daman & Diu": ["DN01", "DD01", "DD02"],
-    "Delhi (NCT)": ["DL01", "DL02", "DL03", "DL04", "DL05", "DL06", "DL07", "DL08", "DL09", "DL10"]
+    "Delhi (NCT)": ["DL01", "DL02", "DL03", "DL04", "DL05", "DL06", "DL07", "DL08", "DL09", "DL10"],
 }
 
-# Internal dataset pointer
 _index = 0
 
+
 def get_all_data():
-    """Return the full static dataset."""
     return DATASET
 
+
 def reset_pointer():
-    """Reset dataset iterator pointer."""
     global _index
     _index = 0
 
 
 def get_next_record():
-    """Return next record from dataset in sequence (loops automatically)."""
     global _index
     record = DATASET[_index % len(DATASET)]
     _index += 1
@@ -117,29 +114,24 @@ def get_next_record():
 
 
 def get_next_uin():
-    """Return next UIN in sequence."""
     return get_next_record()["uin"]
 
 
 def get_next_iccid():
-    """Return next ICCID in sequence."""
     return get_next_record()["iccid"]
 
 
 def get_next_imei():
-    """Return next IMEI in sequence."""
     return get_next_record()["imei"]
 
 
 def get_next_vin():
-    """Return next VIN in sequence."""
     return get_next_record()["vin"]
 
+
 def get_random_record():
-    """Return a random record from the dataset."""
     return random.choice(DATASET)
 
 
 def get_record_by_index(index: int):
-    """Return a record by its fixed index."""
     return DATASET[index % len(DATASET)]

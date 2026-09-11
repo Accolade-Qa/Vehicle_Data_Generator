@@ -2,9 +2,9 @@ import csv
 import os
 from datetime import datetime
 
-from .dynamic_fields import DynamicFieldFactory
-from .settings import SETTINGS
-from .src.vehicle_data_generator import data
+from config.settings import SETTINGS
+from dataset.data import RTO_CODES, get_record_by_index
+from dataset.dynamic_fields import DynamicFieldFactory
 
 
 def _random_uin(field_factory: DynamicFieldFactory):
@@ -33,7 +33,7 @@ def generate_ticket_data_csv(
     output_path = os.path.join(output_dir, output_file)
 
     current_year = datetime.now().year
-    field_factory = DynamicFieldFactory(data.RTO_CODES)
+    field_factory = DynamicFieldFactory(RTO_CODES)
     bootstrap_start_date = datetime(current_year, 1, 1)
     bootstrap_end_date = datetime(current_year + 5, 12, 31)
     dispatch_start_date = datetime(current_year, 1, 1)

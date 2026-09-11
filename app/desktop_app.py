@@ -1,16 +1,16 @@
-﻿import threading
+import threading
 import tkinter as tk
 from datetime import datetime
 from tkinter import filedialog, messagebox, ttk
 
-from .crm_api_generator import send_ticket_generation_requests
-from .fota_batch_generator import generate_fota_batch_csv
-from .institutional_sales_generator import generate_institutional_sales
-from .sample_file_generators import generate_all_sample_files
-from .settings import SETTINGS
-from .sim_batch_generator import generate_sim_batch_csv
-from .ticket_data_csv_generator import generate_ticket_data_csv
-from .ticket_json_generator import generate_ticket_json
+from config.settings import SETTINGS
+from generators.crm_api import send_ticket_generation_requests
+from generators.fota_batch import generate_fota_batch_csv
+from generators.institutional_sales import generate_institutional_sales
+from generators.sample_files import generate_all_sample_files
+from generators.sim_batch import generate_sim_batch_csv
+from generators.ticket_csv import generate_ticket_data_csv
+from generators.ticket_json import generate_ticket_json
 
 
 class VDGDesktopApp(tk.Tk):
@@ -50,26 +50,10 @@ class VDGDesktopApp(tk.Tk):
         generation_frame = ttk.LabelFrame(root, text="Data Generation", padding=10)
         generation_frame.pack(fill=tk.X, pady=(0, 10))
 
-        ttk.Button(
-            generation_frame,
-            text="Generate SIM Batch CSV",
-            command=lambda: self._run_async(self._action_sim_batch),
-        ).grid(row=0, column=0, sticky="ew", padx=4, pady=4)
-        ttk.Button(
-            generation_frame,
-            text="Generate Ticket JSON",
-            command=lambda: self._run_async(self._action_ticket_json),
-        ).grid(row=0, column=1, sticky="ew", padx=4, pady=4)
-        ttk.Button(
-            generation_frame,
-            text="Generate Institutional Sales XLSX",
-            command=lambda: self._run_async(self._action_institutional_sales),
-        ).grid(row=0, column=2, sticky="ew", padx=4, pady=4)
-        ttk.Button(
-            generation_frame,
-            text="Generate Sample Files",
-            command=lambda: self._run_async(self._action_sample_files),
-        ).grid(row=0, column=3, sticky="ew", padx=4, pady=4)
+        ttk.Button(generation_frame, text="Generate SIM Batch CSV", command=lambda: self._run_async(self._action_sim_batch)).grid(row=0, column=0, sticky="ew", padx=4, pady=4)
+        ttk.Button(generation_frame, text="Generate Ticket JSON", command=lambda: self._run_async(self._action_ticket_json)).grid(row=0, column=1, sticky="ew", padx=4, pady=4)
+        ttk.Button(generation_frame, text="Generate Institutional Sales XLSX", command=lambda: self._run_async(self._action_institutional_sales)).grid(row=0, column=2, sticky="ew", padx=4, pady=4)
+        ttk.Button(generation_frame, text="Generate Sample Files", command=lambda: self._run_async(self._action_sample_files)).grid(row=0, column=3, sticky="ew", padx=4, pady=4)
 
         ttk.Label(generation_frame, text="FOTA Filename").grid(row=1, column=0, sticky="w", padx=4, pady=(10, 4))
         ttk.Entry(generation_frame, textvariable=self.fota_file_var, width=24).grid(row=1, column=1, sticky="ew", padx=4, pady=(10, 4))
@@ -81,16 +65,8 @@ class VDGDesktopApp(tk.Tk):
         ttk.Label(generation_frame, text="Ticket CSV Filename").grid(row=2, column=2, sticky="w", padx=4, pady=4)
         ttk.Entry(generation_frame, textvariable=self.ticket_csv_file_var, width=24).grid(row=2, column=3, sticky="ew", padx=4, pady=4)
 
-        ttk.Button(
-            generation_frame,
-            text="Generate FOTA Batch CSV",
-            command=lambda: self._run_async(self._action_fota_batch),
-        ).grid(row=3, column=2, sticky="ew", padx=4, pady=(10, 4))
-        ttk.Button(
-            generation_frame,
-            text="Generate Ticket CSV",
-            command=lambda: self._run_async(self._action_ticket_csv),
-        ).grid(row=3, column=3, sticky="ew", padx=4, pady=(10, 4))
+        ttk.Button(generation_frame, text="Generate FOTA Batch CSV", command=lambda: self._run_async(self._action_fota_batch)).grid(row=3, column=2, sticky="ew", padx=4, pady=(10, 4))
+        ttk.Button(generation_frame, text="Generate Ticket CSV", command=lambda: self._run_async(self._action_ticket_csv)).grid(row=3, column=3, sticky="ew", padx=4, pady=(10, 4))
 
         for index in range(4):
             generation_frame.columnconfigure(index, weight=1)
@@ -103,11 +79,7 @@ class VDGDesktopApp(tk.Tk):
         ttk.Entry(crm_frame, textvariable=self.vin_end_var, width=12).grid(row=0, column=3, sticky="w", padx=4, pady=4)
         ttk.Label(crm_frame, text="VIN Prefix").grid(row=0, column=4, sticky="w", padx=4, pady=4)
         ttk.Entry(crm_frame, textvariable=self.vin_prefix_var, width=26).grid(row=0, column=5, sticky="ew", padx=4, pady=4)
-        ttk.Button(
-            crm_frame,
-            text="Send CRM Requests",
-            command=lambda: self._run_async(self._action_crm),
-        ).grid(row=0, column=6, sticky="ew", padx=4, pady=4)
+        ttk.Button(crm_frame, text="Send CRM Requests", command=lambda: self._run_async(self._action_crm)).grid(row=0, column=6, sticky="ew", padx=4, pady=4)
         crm_frame.columnconfigure(5, weight=1)
 
         log_frame = ttk.LabelFrame(root, text="Execution Log", padding=10)

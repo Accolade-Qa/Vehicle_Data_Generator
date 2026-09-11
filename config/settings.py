@@ -7,18 +7,14 @@ from pathlib import Path
 def _load_dotenv_if_present() -> None:
     candidate_paths: list[Path] = []
 
-    # Source layout (repo root / .env)
-    candidate_paths.append(Path(__file__).resolve().parents[2] / ".env")
-    # Current working directory
+    candidate_paths.append(Path(__file__).resolve().parents[1] / ".env")
     candidate_paths.append(Path.cwd() / ".env")
 
-    # PyInstaller executable folder and parent folder.
     if getattr(sys, "frozen", False):
         exe_dir = Path(sys.executable).resolve().parent
         candidate_paths.append(exe_dir / ".env")
         candidate_paths.append(exe_dir.parent / ".env")
 
-    # Keep order, remove duplicates.
     seen: set[Path] = set()
     ordered_candidates: list[Path] = []
     for candidate in candidate_paths:

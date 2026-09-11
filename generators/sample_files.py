@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-from .src.vehicle_data_generator import data
-from .dynamic_fields import DynamicFieldFactory
-from .settings import SETTINGS
+from config.settings import SETTINGS
+from dataset.data import RTO_CODES, get_record_by_index
+from dataset.dynamic_fields import DynamicFieldFactory
 
 
 def _ensure_output_dir(output_dir: str | None = None) -> str:
@@ -21,7 +21,7 @@ def generate_ota_sheet_csv(num_records: int = 10, output_dir: str | None = None)
         writer = csv.writer(file)
         writer.writerow(["IMEI"])
         for index in range(num_records):
-            writer.writerow([data.get_record_by_index(index)["imei"]])
+            writer.writerow([get_record_by_index(index)["imei"]])
     return output_file
 
 
@@ -31,30 +31,30 @@ def generate_save_device_vin_csv(num_records: int = 10, output_dir: str | None =
         writer = csv.writer(file)
         writer.writerow(["imei", "vin"])
         for index in range(num_records):
-            record = data.get_record_by_index(index)
+            record = get_record_by_index(index)
             writer.writerow([record["imei"], record["vin"]])
     return output_file
 
 
 def generate_save_device_state_csv(num_records: int = 10, output_dir: str | None = None) -> str:
     output_file = os.path.join(_ensure_output_dir(output_dir), "sample_save_device_state.csv")
-    field_factory = DynamicFieldFactory(data.RTO_CODES)
+    field_factory = DynamicFieldFactory(RTO_CODES)
     with open(output_file, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["imei", "state"])
         for index in range(num_records):
-            writer.writerow([data.get_record_by_index(index)["imei"], field_factory.random_state()])
+            writer.writerow([get_record_by_index(index)["imei"], field_factory.random_state()])
     return output_file
 
 
 def generate_dispatch_sheet_excel(num_records: int = 10, output_dir: str | None = None) -> str:
     output_file = os.path.join(_ensure_output_dir(output_dir), "sample_dispatch_sheet.xlsx")
     start_date = datetime.today() - timedelta(days=60)
-    field_factory = DynamicFieldFactory(data.RTO_CODES)
+    field_factory = DynamicFieldFactory(RTO_CODES)
 
     records = []
     for index in range(num_records):
-        record = data.get_record_by_index(index)
+        record = get_record_by_index(index)
         records.append({
             "SR_NO": index + 1,
             "TCU Model Name": SETTINGS.ticket_device_model,
